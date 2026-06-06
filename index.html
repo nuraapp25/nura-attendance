@@ -9,72 +9,198 @@
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--bg:#0a0f1e;--surface:#111827;--border:#1e2d45;--accent:#c5e600;--danger:#ef4444;--text:#f1f5f9;--muted:#64748b;--radius:16px;--green:#22c55e;--red:#ef4444}
-html,body{min-height:100vh;width:100%;background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);display:flex;align-items:flex-start;justify-content:center;padding:20px 16px 40px;-webkit-text-size-adjust:100%}
-body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 80% 50% at 20% -10%,rgba(197,230,0,.10) 0%,transparent 60%),radial-gradient(ellipse 60% 40% at 80% 110%,rgba(168,200,0,.08) 0%,transparent 60%);pointer-events:none;z-index:0}
-.card{position:relative;z-index:1;width:100%;max-width:440px;background:var(--surface);border:1px solid var(--border);border-radius:24px;overflow:hidden;box-shadow:0 24px 60px rgba(0,0,0,.5);animation:fadeUp .4s ease both}
-@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-.header{padding:24px 28px 20px;background:linear-gradient(135deg,#0d1f35,#0a1628);border-bottom:1px solid var(--border);text-align:center}
-.logo-wrap{width:130px;height:62px;margin:0 auto 10px;display:flex;align-items:center;justify-content:center}
-.logo-wrap img{width:100%;height:100%;object-fit:contain}
-.subtitle{font-size:11px;color:var(--muted);letter-spacing:2px;text-transform:uppercase}
-.body{padding:24px}
-.form-group{margin-bottom:18px}
-label{display:block;font-size:11px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted);margin-bottom:7px}
-input{width:100%;background:#0d1526;border:1.5px solid var(--border);border-radius:var(--radius);color:var(--text);font-family:'DM Sans',sans-serif;font-size:16px;padding:14px 16px;outline:none;transition:border-color .2s,box-shadow .2s;-webkit-appearance:none;appearance:none}
-input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(197,230,0,.15)}
-input[readonly]{color:var(--accent);font-weight:600;cursor:default}
-input::placeholder{color:#334155}
-.name-row{display:flex;align-items:center;gap:10px}
-.name-row input{flex:1}
-.badge{display:none;align-items:center;gap:5px;background:rgba(197,230,0,.12);border:1px solid rgba(197,230,0,.3);border-radius:20px;padding:4px 10px;font-size:11px;font-weight:600;color:var(--accent);white-space:nowrap}
-.badge.show{display:flex}
-.gps-bar{display:flex;align-items:center;gap:10px;background:#0d1526;border:1.5px solid var(--border);border-radius:var(--radius);padding:12px 16px;font-size:13px;color:var(--muted);margin-bottom:20px;transition:border-color .3s,color .3s}
-.gps-bar.got{border-color:var(--accent);color:var(--accent)}
-.gps-bar.fail{border-color:var(--danger);color:var(--danger)}
-.gps-dot{width:10px;height:10px;border-radius:50%;background:var(--muted);flex-shrink:0;transition:background .3s}
-.gps-bar.got .gps-dot{background:var(--accent);animation:pulse 1.5s infinite}
-.gps-bar.fail .gps-dot{background:var(--danger)}
-@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(197,230,0,.4)}50%{box-shadow:0 0 0 6px rgba(197,230,0,0)}}
+:root{
+  --bg:#080e1c;
+  --surface:#0f1724;
+  --card:#131f30;
+  --border:#1a2840;
+  --accent:#c5e600;
+  --accent2:#a8c800;
+  --danger:#ef4444;
+  --text:#f1f5f9;
+  --muted:#4a6080;
+  --radius:14px;
+}
+html,body{
+  min-height:100vh;width:100%;
+  background:var(--bg);
+  font-family:'DM Sans',sans-serif;
+  color:var(--text);
+  display:flex;align-items:flex-start;justify-content:center;
+  padding:16px 12px 32px;
+  -webkit-text-size-adjust:100%;
+}
+body::before{
+  content:'';position:fixed;inset:0;
+  background:
+    radial-gradient(ellipse 70% 40% at 15% 0%,rgba(197,230,0,.07) 0%,transparent 60%),
+    radial-gradient(ellipse 50% 30% at 85% 100%,rgba(197,230,0,.05) 0%,transparent 60%);
+  pointer-events:none;z-index:0;
+}
+.card{
+  position:relative;z-index:1;width:100%;max-width:400px;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:20px;
+  overflow:hidden;
+  box-shadow:0 32px 80px rgba(0,0,0,.6),0 0 0 1px rgba(197,230,0,.04);
+  animation:fadeUp .4s ease both;
+}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
 
-/* Action buttons row */
-.action-row{display:none;gap:12px;margin-bottom:0}
+/* ── Header ── */
+.header{
+  padding:24px 24px 20px;
+  background:linear-gradient(160deg,#0b1828 0%,#091320 100%);
+  border-bottom:1px solid var(--border);
+  text-align:center;
+  position:relative;
+}
+.header::after{
+  content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);
+  width:60%;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(197,230,0,.2),transparent);
+}
+.logo-wrap{width:120px;height:58px;margin:0 auto 10px;display:flex;align-items:center;justify-content:center}
+.logo-wrap img{width:100%;height:100%;object-fit:contain}
+.subtitle{font-size:10px;color:var(--muted);letter-spacing:2.5px;text-transform:uppercase}
+
+/* ── Body ── */
+.body{padding:20px}
+
+/* ── Labels & Inputs ── */
+.form-group{margin-bottom:16px}
+label{
+  display:block;font-size:10px;font-weight:600;
+  letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--muted);margin-bottom:6px;
+}
+input{
+  width:100%;background:#0a1520;
+  border:1px solid var(--border);
+  border-radius:var(--radius);color:var(--text);
+  font-family:'DM Sans',sans-serif;font-size:15px;
+  padding:13px 14px;outline:none;
+  transition:border-color .2s,box-shadow .2s;
+  -webkit-appearance:none;appearance:none;
+}
+input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(197,230,0,.1)}
+input[readonly]{color:var(--accent);font-weight:600;cursor:default;background:#0a1520}
+input::placeholder{color:#1e3450}
+
+.name-row{display:flex;align-items:center;gap:8px}
+.name-row input{flex:1}
+
+.badge{
+  display:none;align-items:center;gap:4px;
+  background:rgba(197,230,0,.1);border:1px solid rgba(197,230,0,.25);
+  border-radius:20px;padding:5px 10px;
+  font-size:10px;font-weight:700;letter-spacing:.5px;color:var(--accent);white-space:nowrap;
+}
+.badge.show{display:flex}
+
+/* ── GPS Bar ── */
+.gps-bar{
+  display:flex;align-items:center;gap:10px;
+  background:#0a1520;border:1px solid var(--border);
+  border-radius:var(--radius);padding:11px 14px;
+  font-size:12px;color:var(--muted);
+  margin-bottom:16px;transition:border-color .3s,color .3s;
+}
+.gps-bar.got{border-color:rgba(197,230,0,.4);color:var(--accent)}
+.gps-bar.fail{border-color:rgba(239,68,68,.4);color:var(--danger)}
+.gps-dot{
+  width:8px;height:8px;border-radius:50%;
+  background:var(--muted);flex-shrink:0;transition:background .3s;
+}
+.gps-bar.got .gps-dot{background:var(--accent);animation:pulse 1.8s infinite}
+.gps-bar.fail .gps-dot{background:var(--danger)}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(197,230,0,.5)}60%{box-shadow:0 0 0 6px rgba(197,230,0,0)}}
+
+/* ── Divider ── */
+.divider{
+  display:flex;align-items:center;gap:10px;margin:18px 0;
+}
+.divider span{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* ── Action Buttons ── */
+.action-row{display:none;gap:10px;margin-bottom:0}
 .action-row.show{display:flex}
+
 .btn-action{
-  flex:1;padding:18px 10px;border:none;border-radius:var(--radius);
-  font-family:'Syne',sans-serif;font-size:16px;font-weight:800;
-  letter-spacing:1px;text-transform:uppercase;cursor:pointer;
+  flex:1;padding:0;border:none;border-radius:var(--radius);
+  cursor:pointer;
   transition:transform .15s,box-shadow .15s,opacity .2s;
   position:relative;overflow:hidden;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:8px;min-height:90px;
 }
-.btn-entry{background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;box-shadow:0 8px 24px rgba(34,197,94,.3)}
-.btn-entry:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 12px 32px rgba(34,197,94,.45)}
-.btn-exit{background:linear-gradient(135deg,#ef4444,#dc2626);color:#fff;box-shadow:0 8px 24px rgba(239,68,68,.3)}
-.btn-exit:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 12px 32px rgba(239,68,68,.45)}
-.btn-action:disabled{opacity:.35;cursor:not-allowed;transform:none !important}
-.btn-action:active:not(:disabled){transform:translateY(0)}
-.btn-action.loading::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.25),transparent);animation:shimmer 1s infinite}
+
+.btn-entry{
+  background:linear-gradient(145deg,#1a7a3a,#15612e);
+  border:1px solid rgba(34,197,94,.25);
+  box-shadow:0 8px 24px rgba(34,197,94,.2),inset 0 1px 0 rgba(255,255,255,.08);
+}
+.btn-exit{
+  background:linear-gradient(145deg,#7a1a1a,#611515);
+  border:1px solid rgba(239,68,68,.25);
+  box-shadow:0 8px 24px rgba(239,68,68,.2),inset 0 1px 0 rgba(255,255,255,.08);
+}
+
+.btn-action:hover:not(:disabled).btn-entry{transform:translateY(-2px);box-shadow:0 12px 32px rgba(34,197,94,.35)}
+.btn-action:hover:not(:disabled).btn-exit{transform:translateY(-2px);box-shadow:0 12px 32px rgba(239,68,68,.35)}
+.btn-action:active:not(:disabled){transform:translateY(0) scale(.98)}
+.btn-action:disabled{opacity:.3;cursor:not-allowed;transform:none}
+
+.btn-action.loading::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.15),transparent);
+  animation:shimmer 1s infinite;
+}
 @keyframes shimmer{from{transform:translateX(-100%)}to{transform:translateX(100%)}}
 
-/* Icon inside button */
-.btn-icon{display:block;font-size:24px;margin-bottom:4px}
+.btn-icon-wrap{
+  width:40px;height:40px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;
+}
+.btn-entry .btn-icon-wrap{background:rgba(34,197,94,.2)}
+.btn-exit  .btn-icon-wrap{background:rgba(239,68,68,.2)}
 
-.result{display:none;border-radius:var(--radius);padding:16px 18px;font-size:14px;line-height:1.6;margin-top:18px}
-.result.success{display:block;background:rgba(34,197,94,.08);border:1.5px solid rgba(34,197,94,.3);color:#86efac}
-.result.exit-success{display:block;background:rgba(239,68,68,.08);border:1.5px solid rgba(239,68,68,.3);color:#fca5a5}
-.result.warning{display:block;background:rgba(245,158,11,.1);border:1.5px solid rgba(245,158,11,.35);color:#fcd34d}
-.result.error{display:block;background:rgba(239,68,68,.1);border:1.5px solid rgba(239,68,68,.35);color:#fca5a5}
-.result-title{font-family:'Syne',sans-serif;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px}
-.meta{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
-.meta-chip{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:4px 10px;font-size:11px;color:var(--muted)}
-.footer{padding:14px 28px 18px;text-align:center;font-size:11px;color:#1e3a5f;border-top:1px solid var(--border)}
-.spinner{display:none;width:16px;height:16px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .6s linear infinite;flex-shrink:0}
+.btn-label{
+  font-family:'Syne',sans-serif;font-size:14px;font-weight:800;
+  letter-spacing:2px;text-transform:uppercase;color:#fff;
+}
+.btn-sub{font-size:10px;color:rgba(255,255,255,.5);letter-spacing:.5px}
+
+/* ── Result ── */
+.result{display:none;border-radius:var(--radius);padding:14px 16px;font-size:13px;line-height:1.6;margin-top:16px}
+.result.success{display:block;background:rgba(34,197,94,.07);border:1px solid rgba(34,197,94,.25);color:#86efac}
+.result.exit-ok{display:block;background:rgba(239,68,68,.07);border:1px solid rgba(239,68,68,.25);color:#fca5a5}
+.result.warning{display:block;background:rgba(245,158,11,.07);border:1px solid rgba(245,158,11,.25);color:#fcd34d}
+.result.error{display:block;background:rgba(239,68,68,.07);border:1px solid rgba(239,68,68,.25);color:#fca5a5}
+.result-title{font-family:'Syne',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px;opacity:.8}
+.meta{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+.meta-chip{
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
+  border-radius:8px;padding:3px 9px;font-size:11px;color:var(--muted);
+}
+
+/* ── Footer ── */
+.footer{
+  padding:12px 24px 16px;text-align:center;
+  font-size:10px;color:#0f2040;letter-spacing:.5px;
+  border-top:1px solid var(--border);
+}
+
+/* ── Spinner & Hint ── */
+.spinner{display:none;width:15px;height:15px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .6s linear infinite;flex-shrink:0}
 .spinner.show{display:block}
 @keyframes spin{to{transform:rotate(360deg)}}
-.hint{font-size:12px;margin-top:6px;min-height:16px;padding-left:4px}
+.hint{font-size:11px;margin-top:5px;min-height:15px;padding-left:2px}
 .hint.err{color:var(--danger)}
 .hint.ok{color:var(--accent)}
-.divider{height:1px;background:var(--border);margin:20px 0}
 </style>
 </head>
 <body>
@@ -85,10 +211,9 @@ input::placeholder{color:#334155}
   </div>
   <div class="body">
 
-    <!-- Driver ID -->
     <div class="form-group">
       <label>Driver ID</label>
-      <div style="display:flex;gap:10px;align-items:center">
+      <div style="display:flex;gap:8px;align-items:center">
         <input type="text" id="driverId" placeholder="e.g. DRV001"
           autocomplete="off" autocorrect="off" autocapitalize="characters"
           spellcheck="false" maxlength="20"/>
@@ -97,41 +222,41 @@ input::placeholder{color:#334155}
       <div class="hint" id="idHint"></div>
     </div>
 
-    <!-- Driver Name -->
     <div class="form-group">
       <label>Driver Name</label>
       <div class="name-row">
-        <input type="text" id="driverName" placeholder="Auto-filled after ID entry" readonly/>
+        <input type="text" id="driverName" placeholder="Auto-filled" readonly/>
         <span class="badge" id="verifiedBadge">
-          <svg width="10" height="10" viewBox="0 0 12 12" fill="none">
-            <path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          <svg width="9" height="9" viewBox="0 0 12 12" fill="none">
+            <path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
           </svg>
           Verified
         </span>
       </div>
     </div>
 
-    <div class="divider"></div>
-
-    <!-- GPS Bar -->
     <div class="gps-bar" id="gpsBar">
       <div class="gps-dot"></div>
-      <span id="gpsText">Location captured on Entry / Exit</span>
+      <span id="gpsText">Tap Entry or Exit to capture location</span>
     </div>
 
-    <!-- Entry / Exit Buttons -->
+    <div class="divider" id="actionDivider" style="display:none">
+      <span>Select Action</span>
+    </div>
+
     <div class="action-row" id="actionRow">
-      <button class="btn-action btn-entry" id="entryBtn" onclick="handleAction('Entry')" disabled>
-        <span class="btn-icon">&#8594;</span>
-        ENTRY
+      <button class="btn-action btn-entry" id="entryBtn" onclick="handleAction('Entry')">
+        <div class="btn-icon-wrap">&#128205;</div>
+        <span class="btn-label">Entry</span>
+        <span class="btn-sub">Entering Yard</span>
       </button>
-      <button class="btn-action btn-exit" id="exitBtn" onclick="handleAction('Exit')" disabled>
-        <span class="btn-icon">&#8592;</span>
-        EXIT
+      <button class="btn-action btn-exit" id="exitBtn" onclick="handleAction('Exit')">
+        <div class="btn-icon-wrap">&#128694;</div>
+        <span class="btn-label">Exit</span>
+        <span class="btn-sub">Leaving Yard</span>
       </button>
     </div>
 
-    <!-- Result -->
     <div class="result" id="resultBox">
       <div class="result-title" id="resultTitle"></div>
       <div id="resultMsg"></div>
@@ -144,115 +269,100 @@ input::placeholder{color:#334155}
 
 <script>
 var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxA_sjFajkXg3dugrSzecWkWHtnJ6RZcVsly0PtY6K_wPv_I3m7tv6cDxg6B-pW4_LCvg/exec";
-var state = { driverVerified:false, driverName:"", submitting:false, pendingAction:"" };
+var state = {driverVerified:false, driverName:"", submitting:false, pendingAction:""};
 var lookupTimer = null;
 
-function getDeviceToken() {
-  var key = "nura_device_token";
-  try {
-    var t = localStorage.getItem(key);
-    if (!t) { t = "DT-"+Date.now()+"-"+Math.random().toString(36).substr(2,12).toUpperCase(); localStorage.setItem(key,t); }
+function getDeviceToken(){
+  var key="nura_device_token";
+  try{
+    var t=localStorage.getItem(key);
+    if(!t){t="DT-"+Date.now()+"-"+Math.random().toString(36).substr(2,12).toUpperCase();localStorage.setItem(key,t);}
     return t;
-  } catch(e) {
-    if (!window._nura) window._nura = "DT-"+Date.now()+"-"+Math.random().toString(36).substr(2,12).toUpperCase();
+  }catch(e){
+    if(!window._nura)window._nura="DT-"+Date.now()+"-"+Math.random().toString(36).substr(2,12).toUpperCase();
     return window._nura;
   }
 }
 
-function getDeviceInfo() {
+function getDeviceInfo(){
   return (navigator.userAgent+"|"+screen.width+"x"+screen.height+"|"+navigator.language).substr(0,120);
 }
 
-// Driver ID input
-document.getElementById("driverId").addEventListener("input", function() {
+document.getElementById("driverId").addEventListener("input",function(){
   clearTimeout(lookupTimer);
-  var val = this.value.trim();
+  var val=this.value.trim();
   state.driverVerified=false; state.driverName="";
   document.getElementById("driverName").value="";
   document.getElementById("verifiedBadge").classList.remove("show");
   document.getElementById("actionRow").classList.remove("show");
-  document.getElementById("entryBtn").disabled=true;
-  document.getElementById("exitBtn").disabled=true;
+  document.getElementById("actionDivider").style.display="none";
   document.getElementById("idHint").className="hint";
   document.getElementById("idHint").textContent="";
+  setGps("","Tap Entry or Exit to capture location");
   hideResult();
-  if (val.length<3) return;
-  lookupTimer = setTimeout(function(){lookupDriver(val);},600);
+  if(val.length<3)return;
+  lookupTimer=setTimeout(function(){lookupDriver(val);},600);
 });
 
-function lookupDriver(id) {
+function lookupDriver(id){
   showSpinner(true);
-  var url = SCRIPT_URL+"?action=getDriver&driverId="+encodeURIComponent(id)+"&deviceToken="+encodeURIComponent(getDeviceToken());
-  var xhr = new XMLHttpRequest();
+  var url=SCRIPT_URL+"?action=getDriver&driverId="+encodeURIComponent(id)+"&deviceToken="+encodeURIComponent(getDeviceToken());
+  var xhr=new XMLHttpRequest();
   xhr.open("GET",url,true);
-  xhr.onload = function() {
+  xhr.onload=function(){
     showSpinner(false);
-    try {
-      var res = JSON.parse(xhr.responseText);
-      if (res.success) {
-        state.driverVerified=true; state.driverName=res.driverName;
+    try{
+      var res=JSON.parse(xhr.responseText);
+      if(res.success){
+        state.driverVerified=true;
+        state.driverName=res.driverName;
         document.getElementById("driverName").value=res.driverName;
         document.getElementById("verifiedBadge").classList.add("show");
-        // Show action buttons
         document.getElementById("actionRow").classList.add("show");
-        document.getElementById("entryBtn").disabled=false;
-        document.getElementById("exitBtn").disabled=false;
-        setHint("idHint", res.isFirstTime ? "First time — device will be registered on action" : "Driver found", "ok");
-      } else {
+        document.getElementById("actionDivider").style.display="flex";
+        setHint("idHint",res.isFirstTime?"First time — device will be registered on action":"Driver found","ok");
+      }else{
         setHint("idHint",res.message,"err");
-        if (res.deviceBlocked) showResult("error","Device Not Recognised",res.message,[]);
+        if(res.deviceBlocked)showResult("error","Device Not Recognised",res.message,[]);
       }
-    } catch(e) { setHint("idHint","Server error. Try again.","err"); }
+    }catch(e){setHint("idHint","Server error. Try again.","err");}
   };
-  xhr.onerror = function(){showSpinner(false);setHint("idHint","Network error. Try again.","err");};
+  xhr.onerror=function(){showSpinner(false);setHint("idHint","Network error. Try again.","err");};
   xhr.send();
 }
 
-// Entry or Exit tapped
-function handleAction(action) {
-  if (!state.driverVerified || state.submitting) return;
-  state.pendingAction = action;
-  state.submitting = true;
-
-  // Disable both buttons, show loading on tapped one
-  var activeBtn = action === "Entry" ? document.getElementById("entryBtn") : document.getElementById("exitBtn");
-  var otherBtn  = action === "Entry" ? document.getElementById("exitBtn")  : document.getElementById("entryBtn");
+function handleAction(action){
+  if(!state.driverVerified||state.submitting)return;
+  state.pendingAction=action;
+  state.submitting=true;
+  var activeBtn=document.getElementById(action==="Entry"?"entryBtn":"exitBtn");
+  var otherBtn=document.getElementById(action==="Entry"?"exitBtn":"entryBtn");
   activeBtn.disabled=true; activeBtn.classList.add("loading");
-  activeBtn.innerHTML = '<span class="btn-icon">...</span>' + action;
   otherBtn.disabled=true;
-
   setGps("","Requesting location...");
   hideResult();
-
-  if (!navigator.geolocation) {
-    showResult("error","GPS Not Available","Please use Chrome or Safari.",[]);
-    resetBtns(); return;
-  }
-
-  if (navigator.permissions && navigator.permissions.query) {
+  if(!navigator.geolocation){showResult("error","GPS Not Available","Please use Chrome or Safari.",[]);resetBtns();return;}
+  if(navigator.permissions&&navigator.permissions.query){
     navigator.permissions.query({name:"geolocation"}).then(function(r){
-      if (r.state==="denied"){
-        showResult("error","Location Blocked","iPhone fix: Settings > Privacy & Security > Location Services > Safari > While Using.",[]);
-        resetBtns(); return;
-      }
+      if(r.state==="denied"){showResult("error","Location Blocked","iPhone: Settings > Privacy & Security > Location Services > Safari > While Using.",[]);resetBtns();return;}
       tryGPS(true);
     }).catch(function(){tryGPS(true);});
-  } else { tryGPS(true); }
+  }else{tryGPS(true);}
 }
 
-function tryGPS(high) {
+function tryGPS(high){
   navigator.geolocation.getCurrentPosition(
     function(pos){
-      var lat=pos.coords.latitude, lng=pos.coords.longitude;
+      var lat=pos.coords.latitude,lng=pos.coords.longitude;
       setGps("got","Location captured ("+lat.toFixed(5)+", "+lng.toFixed(5)+")");
-      submitAction(lat, lng);
+      submitAction(lat,lng);
     },
     function(err){
       if(high){tryGPS(false);return;}
-      var msg = err.code===1
-        ? "Location denied. iPhone: Settings > Privacy & Security > Location Services > Safari > While Using."
-        : err.code===2 ? "Location unavailable. Step outside and try again."
-        : "Location timed out. Please try again.";
+      var msg=err.code===1
+        ?"Location denied. iPhone: Settings > Privacy & Security > Location Services > Safari > While Using."
+        :err.code===2?"Location unavailable. Step outside and try again."
+        :"Location timed out. Please try again.";
       setGps("fail","Location unavailable.");
       showResult("error","Location Required",msg,[]);
       resetBtns();
@@ -261,8 +371,8 @@ function tryGPS(high) {
   );
 }
 
-function submitAction(lat, lng) {
-  var params = "action=checkIn"
+function submitAction(lat,lng){
+  var params="action=checkIn"
     +"&driverId="+encodeURIComponent(document.getElementById("driverId").value.trim())
     +"&driverName="+encodeURIComponent(state.driverName)
     +"&latitude="+lat
@@ -270,36 +380,34 @@ function submitAction(lat, lng) {
     +"&deviceToken="+encodeURIComponent(getDeviceToken())
     +"&deviceInfo="+encodeURIComponent(getDeviceInfo())
     +"&attendanceAction="+encodeURIComponent(state.pendingAction);
-
-  var xhr = new XMLHttpRequest();
+  var xhr=new XMLHttpRequest();
   xhr.open("POST",SCRIPT_URL,true);
   xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
-  xhr.onload = function(){
-    try {
-      var res = JSON.parse(xhr.responseText);
-      if (res.success) {
-        var isEntry = state.pendingAction === "Entry";
-        var type  = res.locationStatus === "Inside Yard"
-          ? (isEntry ? "success" : "exit-success")
-          : "warning";
-        var title = state.pendingAction + (res.locationStatus === "Inside Yard" ? " Recorded" : " Recorded - Outside Yard");
-        var chips = [
+  xhr.onload=function(){
+    try{
+      var res=JSON.parse(xhr.responseText);
+      if(res.success){
+        var isEntry=state.pendingAction==="Entry";
+        var inside=res.locationStatus==="Inside Yard";
+        var type=inside?(isEntry?"success":"exit-ok"):"warning";
+        var title=(isEntry?"Entry":"Exit")+" "+(inside?"Recorded":"Recorded - Outside Yard");
+        var chips=[
           {label:"Time: "+res.timestamp},
           {label:"Yard: "+res.yardName},
           {label:"Location: "+res.locationStatus}
         ];
-        if (res.isFirstTime) chips.push({label:"Device Registered"});
-        showResult(type, title, res.message, chips);
-        // Lock form after success
+        if(res.isFirstTime)chips.push({label:"Device Registered"});
+        showResult(type,title,res.message,chips);
         document.getElementById("driverId").disabled=true;
         document.getElementById("actionRow").classList.remove("show");
-      } else {
+        document.getElementById("actionDivider").style.display="none";
+      }else{
         showResult("error","Failed",res.message,[]);
         resetBtns();
       }
-    } catch(e){showResult("error","Server Error","Could not save. Please try again.",[]);resetBtns();}
+    }catch(e){showResult("error","Server Error","Could not save. Please try again.",[]);resetBtns();}
   };
-  xhr.onerror = function(){showResult("error","Network Error","Could not reach server.",[]);resetBtns();};
+  xhr.onerror=function(){showResult("error","Network Error","Could not reach server.",[]);resetBtns();};
   xhr.send(params);
 }
 
@@ -316,13 +424,11 @@ function showResult(type,title,msg,chips){
   chips.forEach(function(c){var s=document.createElement("span");s.className="meta-chip";s.textContent=c.label;meta.appendChild(s);});
 }
 function resetBtns(){
-  state.submitting=false; state.pendingAction="";
-  var eBtn=document.getElementById("entryBtn");
-  var xBtn=document.getElementById("exitBtn");
-  eBtn.disabled=false; eBtn.classList.remove("loading");
-  eBtn.innerHTML='<span class="btn-icon">&#8594;</span>ENTRY';
-  xBtn.disabled=false; xBtn.classList.remove("loading");
-  xBtn.innerHTML='<span class="btn-icon">&#8592;</span>EXIT';
+  state.submitting=false;state.pendingAction="";
+  document.getElementById("entryBtn").disabled=false;
+  document.getElementById("entryBtn").classList.remove("loading");
+  document.getElementById("exitBtn").disabled=false;
+  document.getElementById("exitBtn").classList.remove("loading");
 }
 </script>
 </body>
