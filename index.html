@@ -300,7 +300,7 @@ document.getElementById("driverId").addEventListener("input",function(){
   document.getElementById("idHint").textContent="";
   setGps("","Tap Entry or Exit to capture location");
   hideResult();
-  if(val.length<3)return;
+  if(val.length<1)return;
   lookupTimer=setTimeout(function(){lookupDriver(val);},600);
 });
 
