@@ -9,13 +9,13 @@
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--bg:#0a0f1e;--surface:#111827;--border:#1e2d45;--accent:#c5e600;--danger:#ef4444;--text:#f1f5f9;--muted:#64748b;--radius:16px}
+:root{--bg:#0a0f1e;--surface:#111827;--border:#1e2d45;--accent:#c5e600;--danger:#ef4444;--text:#f1f5f9;--muted:#64748b;--radius:16px;--green:#22c55e;--red:#ef4444}
 html,body{min-height:100vh;width:100%;background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);display:flex;align-items:flex-start;justify-content:center;padding:20px 16px 40px;-webkit-text-size-adjust:100%}
 body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 80% 50% at 20% -10%,rgba(197,230,0,.10) 0%,transparent 60%),radial-gradient(ellipse 60% 40% at 80% 110%,rgba(168,200,0,.08) 0%,transparent 60%);pointer-events:none;z-index:0}
 .card{position:relative;z-index:1;width:100%;max-width:440px;background:var(--surface);border:1px solid var(--border);border-radius:24px;overflow:hidden;box-shadow:0 24px 60px rgba(0,0,0,.5);animation:fadeUp .4s ease both}
 @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-.header{padding:28px 28px 22px;background:linear-gradient(135deg,#0d1f35,#0a1628);border-bottom:1px solid var(--border);text-align:center}
-.logo-wrap{width:140px;height:68px;margin:0 auto 12px;display:flex;align-items:center;justify-content:center}
+.header{padding:24px 28px 20px;background:linear-gradient(135deg,#0d1f35,#0a1628);border-bottom:1px solid var(--border);text-align:center}
+.logo-wrap{width:130px;height:62px;margin:0 auto 10px;display:flex;align-items:center;justify-content:center}
 .logo-wrap img{width:100%;height:100%;object-fit:contain}
 .subtitle{font-size:11px;color:var(--muted);letter-spacing:2px;text-transform:uppercase}
 .body{padding:24px}
@@ -36,14 +36,32 @@ input::placeholder{color:#334155}
 .gps-bar.got .gps-dot{background:var(--accent);animation:pulse 1.5s infinite}
 .gps-bar.fail .gps-dot{background:var(--danger)}
 @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(197,230,0,.4)}50%{box-shadow:0 0 0 6px rgba(197,230,0,0)}}
-.btn{width:100%;padding:16px;border:none;border-radius:var(--radius);font-family:'Syne',sans-serif;font-size:15px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:transform .15s,box-shadow .15s;position:relative;overflow:hidden}
-.btn-primary{background:linear-gradient(135deg,#c5e600,#a8c800);color:#0a1200;box-shadow:0 8px 24px rgba(197,230,0,.3)}
-.btn-primary:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 12px 32px rgba(197,230,0,.4)}
-.btn:disabled{opacity:.45;cursor:not-allowed}
-.btn-primary.loading::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.25),transparent);animation:shimmer 1s infinite}
+
+/* Action buttons row */
+.action-row{display:none;gap:12px;margin-bottom:0}
+.action-row.show{display:flex}
+.btn-action{
+  flex:1;padding:18px 10px;border:none;border-radius:var(--radius);
+  font-family:'Syne',sans-serif;font-size:16px;font-weight:800;
+  letter-spacing:1px;text-transform:uppercase;cursor:pointer;
+  transition:transform .15s,box-shadow .15s,opacity .2s;
+  position:relative;overflow:hidden;
+}
+.btn-entry{background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;box-shadow:0 8px 24px rgba(34,197,94,.3)}
+.btn-entry:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 12px 32px rgba(34,197,94,.45)}
+.btn-exit{background:linear-gradient(135deg,#ef4444,#dc2626);color:#fff;box-shadow:0 8px 24px rgba(239,68,68,.3)}
+.btn-exit:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 12px 32px rgba(239,68,68,.45)}
+.btn-action:disabled{opacity:.35;cursor:not-allowed;transform:none !important}
+.btn-action:active:not(:disabled){transform:translateY(0)}
+.btn-action.loading::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.25),transparent);animation:shimmer 1s infinite}
 @keyframes shimmer{from{transform:translateX(-100%)}to{transform:translateX(100%)}}
+
+/* Icon inside button */
+.btn-icon{display:block;font-size:24px;margin-bottom:4px}
+
 .result{display:none;border-radius:var(--radius);padding:16px 18px;font-size:14px;line-height:1.6;margin-top:18px}
-.result.success{display:block;background:rgba(197,230,0,.08);border:1.5px solid rgba(197,230,0,.3);color:#d4f000}
+.result.success{display:block;background:rgba(34,197,94,.08);border:1.5px solid rgba(34,197,94,.3);color:#86efac}
+.result.exit-success{display:block;background:rgba(239,68,68,.08);border:1.5px solid rgba(239,68,68,.3);color:#fca5a5}
 .result.warning{display:block;background:rgba(245,158,11,.1);border:1.5px solid rgba(245,158,11,.35);color:#fcd34d}
 .result.error{display:block;background:rgba(239,68,68,.1);border:1.5px solid rgba(239,68,68,.35);color:#fca5a5}
 .result-title{font-family:'Syne',sans-serif;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px}
@@ -56,6 +74,7 @@ input::placeholder{color:#334155}
 .hint{font-size:12px;margin-top:6px;min-height:16px;padding-left:4px}
 .hint.err{color:var(--danger)}
 .hint.ok{color:var(--accent)}
+.divider{height:1px;background:var(--border);margin:20px 0}
 </style>
 </head>
 <body>
@@ -65,40 +84,67 @@ input::placeholder{color:#334155}
     <div class="subtitle">Driver Attendance System</div>
   </div>
   <div class="body">
+
+    <!-- Driver ID -->
     <div class="form-group">
       <label>Driver ID</label>
       <div style="display:flex;gap:10px;align-items:center">
-        <input type="text" id="driverId" placeholder="e.g. DRV001" autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false" maxlength="20"/>
+        <input type="text" id="driverId" placeholder="e.g. DRV001"
+          autocomplete="off" autocorrect="off" autocapitalize="characters"
+          spellcheck="false" maxlength="20"/>
         <div class="spinner" id="lookupSpinner"></div>
       </div>
       <div class="hint" id="idHint"></div>
     </div>
+
+    <!-- Driver Name -->
     <div class="form-group">
       <label>Driver Name</label>
       <div class="name-row">
         <input type="text" id="driverName" placeholder="Auto-filled after ID entry" readonly/>
         <span class="badge" id="verifiedBadge">
-          <svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          <svg width="10" height="10" viewBox="0 0 12 12" fill="none">
+            <path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
           Verified
         </span>
       </div>
     </div>
+
+    <div class="divider"></div>
+
+    <!-- GPS Bar -->
     <div class="gps-bar" id="gpsBar">
       <div class="gps-dot"></div>
-      <span id="gpsText">Location will be captured on Check In</span>
+      <span id="gpsText">Location captured on Entry / Exit</span>
     </div>
-    <button class="btn btn-primary" id="checkInBtn" disabled onclick="handleCheckIn()">Check In</button>
+
+    <!-- Entry / Exit Buttons -->
+    <div class="action-row" id="actionRow">
+      <button class="btn-action btn-entry" id="entryBtn" onclick="handleAction('Entry')" disabled>
+        <span class="btn-icon">&#8594;</span>
+        ENTRY
+      </button>
+      <button class="btn-action btn-exit" id="exitBtn" onclick="handleAction('Exit')" disabled>
+        <span class="btn-icon">&#8592;</span>
+        EXIT
+      </button>
+    </div>
+
+    <!-- Result -->
     <div class="result" id="resultBox">
       <div class="result-title" id="resultTitle"></div>
       <div id="resultMsg"></div>
       <div class="meta" id="resultMeta"></div>
     </div>
+
   </div>
   <div class="footer">Powered by Nura &middot; A New Era</div>
 </div>
+
 <script>
 var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxA_sjFajkXg3dugrSzecWkWHtnJ6RZcVsly0PtY6K_wPv_I3m7tv6cDxg6B-pW4_LCvg/exec";
-var state = { driverVerified:false, driverName:"", submitting:false };
+var state = { driverVerified:false, driverName:"", submitting:false, pendingAction:"" };
 var lookupTimer = null;
 
 function getDeviceToken() {
@@ -117,15 +163,19 @@ function getDeviceInfo() {
   return (navigator.userAgent+"|"+screen.width+"x"+screen.height+"|"+navigator.language).substr(0,120);
 }
 
+// Driver ID input
 document.getElementById("driverId").addEventListener("input", function() {
   clearTimeout(lookupTimer);
   var val = this.value.trim();
   state.driverVerified=false; state.driverName="";
   document.getElementById("driverName").value="";
   document.getElementById("verifiedBadge").classList.remove("show");
-  document.getElementById("checkInBtn").disabled=true;
+  document.getElementById("actionRow").classList.remove("show");
+  document.getElementById("entryBtn").disabled=true;
+  document.getElementById("exitBtn").disabled=true;
   document.getElementById("idHint").className="hint";
   document.getElementById("idHint").textContent="";
+  hideResult();
   if (val.length<3) return;
   lookupTimer = setTimeout(function(){lookupDriver(val);},600);
 });
@@ -143,8 +193,11 @@ function lookupDriver(id) {
         state.driverVerified=true; state.driverName=res.driverName;
         document.getElementById("driverName").value=res.driverName;
         document.getElementById("verifiedBadge").classList.add("show");
-        document.getElementById("checkInBtn").disabled=false;
-        setHint("idHint", res.isFirstTime ? "First time check-in - device will be registered" : "Driver found", "ok");
+        // Show action buttons
+        document.getElementById("actionRow").classList.add("show");
+        document.getElementById("entryBtn").disabled=false;
+        document.getElementById("exitBtn").disabled=false;
+        setHint("idHint", res.isFirstTime ? "First time — device will be registered on action" : "Driver found", "ok");
       } else {
         setHint("idHint",res.message,"err");
         if (res.deviceBlocked) showResult("error","Device Not Recognised",res.message,[]);
@@ -155,73 +208,98 @@ function lookupDriver(id) {
   xhr.send();
 }
 
-function handleCheckIn() {
-  if (!state.driverVerified||state.submitting) return;
-  if (navigator.permissions&&navigator.permissions.query) {
-    navigator.permissions.query({name:"geolocation"}).then(function(r){
-      if (r.state==="denied"){showResult("error","Location Blocked","iPhone fix: Settings > Privacy & Security > Location Services > Safari > While Using.",[]);return;}
-      startCheckIn();
-    }).catch(function(){startCheckIn();});
-  } else { startCheckIn(); }
-}
+// Entry or Exit tapped
+function handleAction(action) {
+  if (!state.driverVerified || state.submitting) return;
+  state.pendingAction = action;
+  state.submitting = true;
 
-function startCheckIn() {
-  state.submitting=true;
-  var btn=document.getElementById("checkInBtn");
-  btn.disabled=true; btn.classList.add("loading"); btn.textContent="Getting GPS...";
-  setGps("","Requesting location..."); hideResult();
-  if (!navigator.geolocation){showResult("error","GPS Not Available","Please use Chrome or Safari.",[]);resetBtn();return;}
-  tryGPS(true);
+  // Disable both buttons, show loading on tapped one
+  var activeBtn = action === "Entry" ? document.getElementById("entryBtn") : document.getElementById("exitBtn");
+  var otherBtn  = action === "Entry" ? document.getElementById("exitBtn")  : document.getElementById("entryBtn");
+  activeBtn.disabled=true; activeBtn.classList.add("loading");
+  activeBtn.innerHTML = '<span class="btn-icon">...</span>' + action;
+  otherBtn.disabled=true;
+
+  setGps("","Requesting location...");
+  hideResult();
+
+  if (!navigator.geolocation) {
+    showResult("error","GPS Not Available","Please use Chrome or Safari.",[]);
+    resetBtns(); return;
+  }
+
+  if (navigator.permissions && navigator.permissions.query) {
+    navigator.permissions.query({name:"geolocation"}).then(function(r){
+      if (r.state==="denied"){
+        showResult("error","Location Blocked","iPhone fix: Settings > Privacy & Security > Location Services > Safari > While Using.",[]);
+        resetBtns(); return;
+      }
+      tryGPS(true);
+    }).catch(function(){tryGPS(true);});
+  } else { tryGPS(true); }
 }
 
 function tryGPS(high) {
   navigator.geolocation.getCurrentPosition(
     function(pos){
-      var lat=pos.coords.latitude,lng=pos.coords.longitude;
+      var lat=pos.coords.latitude, lng=pos.coords.longitude;
       setGps("got","Location captured ("+lat.toFixed(5)+", "+lng.toFixed(5)+")");
-      document.getElementById("checkInBtn").textContent="Saving...";
-      submitCheckIn(lat,lng);
+      submitAction(lat, lng);
     },
     function(err){
       if(high){tryGPS(false);return;}
-      var msg=err.code===1?"Location denied. iPhone: Settings > Privacy & Security > Location Services > Safari > While Using.":err.code===2?"Location unavailable. Step outside and try again.":"Location timed out. Please try again.";
+      var msg = err.code===1
+        ? "Location denied. iPhone: Settings > Privacy & Security > Location Services > Safari > While Using."
+        : err.code===2 ? "Location unavailable. Step outside and try again."
+        : "Location timed out. Please try again.";
       setGps("fail","Location unavailable.");
       showResult("error","Location Required",msg,[]);
-      resetBtn();
+      resetBtns();
     },
     high?{enableHighAccuracy:true,timeout:12000,maximumAge:0}:{enableHighAccuracy:false,timeout:15000,maximumAge:60000}
   );
 }
 
-function submitCheckIn(lat,lng){
-  var params="action=checkIn"
+function submitAction(lat, lng) {
+  var params = "action=checkIn"
     +"&driverId="+encodeURIComponent(document.getElementById("driverId").value.trim())
     +"&driverName="+encodeURIComponent(state.driverName)
     +"&latitude="+lat
     +"&longitude="+lng
     +"&deviceToken="+encodeURIComponent(getDeviceToken())
-    +"&deviceInfo="+encodeURIComponent(getDeviceInfo());
-  var xhr=new XMLHttpRequest();
+    +"&deviceInfo="+encodeURIComponent(getDeviceInfo())
+    +"&attendanceAction="+encodeURIComponent(state.pendingAction);
+
+  var xhr = new XMLHttpRequest();
   xhr.open("POST",SCRIPT_URL,true);
   xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
-  xhr.onload=function(){
-    try{
-      var res=JSON.parse(xhr.responseText);
-      if(res.success){
-        var type=res.status==="Present"?"success":"warning";
-        var title=res.status==="Present"?"Check In Successful":"Checked In - Outside Yard";
-        var chips=[{label:"Time: "+res.timestamp},{label:"Yard: "+res.yardName},{label:"Status: "+res.status}];
-        if(res.isFirstTime) chips.push({label:"Device Registered"});
-        showResult(type,title,res.message,chips);
+  xhr.onload = function(){
+    try {
+      var res = JSON.parse(xhr.responseText);
+      if (res.success) {
+        var isEntry = state.pendingAction === "Entry";
+        var type  = res.locationStatus === "Inside Yard"
+          ? (isEntry ? "success" : "exit-success")
+          : "warning";
+        var title = state.pendingAction + (res.locationStatus === "Inside Yard" ? " Recorded" : " Recorded - Outside Yard");
+        var chips = [
+          {label:"Time: "+res.timestamp},
+          {label:"Yard: "+res.yardName},
+          {label:"Location: "+res.locationStatus}
+        ];
+        if (res.isFirstTime) chips.push({label:"Device Registered"});
+        showResult(type, title, res.message, chips);
+        // Lock form after success
         document.getElementById("driverId").disabled=true;
-        document.getElementById("checkInBtn").style.display="none";
+        document.getElementById("actionRow").classList.remove("show");
       } else {
-        showResult("error","Check In Failed",res.message,[]);
-        resetBtn();
+        showResult("error","Failed",res.message,[]);
+        resetBtns();
       }
-    } catch(e){showResult("error","Server Error","Could not save. Please try again.",[]);resetBtn();}
+    } catch(e){showResult("error","Server Error","Could not save. Please try again.",[]);resetBtns();}
   };
-  xhr.onerror=function(){showResult("error","Network Error","Could not reach server.",[]);resetBtn();};
+  xhr.onerror = function(){showResult("error","Network Error","Could not reach server.",[]);resetBtns();};
   xhr.send(params);
 }
 
@@ -237,10 +315,14 @@ function showResult(type,title,msg,chips){
   var meta=document.getElementById("resultMeta");meta.innerHTML="";
   chips.forEach(function(c){var s=document.createElement("span");s.className="meta-chip";s.textContent=c.label;meta.appendChild(s);});
 }
-function resetBtn(){
-  state.submitting=false;
-  var btn=document.getElementById("checkInBtn");
-  btn.disabled=false;btn.classList.remove("loading");btn.textContent="Check In";
+function resetBtns(){
+  state.submitting=false; state.pendingAction="";
+  var eBtn=document.getElementById("entryBtn");
+  var xBtn=document.getElementById("exitBtn");
+  eBtn.disabled=false; eBtn.classList.remove("loading");
+  eBtn.innerHTML='<span class="btn-icon">&#8594;</span>ENTRY';
+  xBtn.disabled=false; xBtn.classList.remove("loading");
+  xBtn.innerHTML='<span class="btn-icon">&#8592;</span>EXIT';
 }
 </script>
 </body>
