@@ -285,13 +285,44 @@ function getDeviceToken(){
 }
 
 function getDeviceInfo(){
-  return (navigator.userAgent+"|"+screen.width+"x"+screen.height+"|"+navigator.language).substr(0,120);
+  var ua = navigator.userAgent;
+  var model = "Unknown Device";
+
+  // iPhone detection
+  if (/iPhone/.test(ua)) {
+    model = "iPhone";
+  }
+  // iPad detection
+  else if (/iPad/.test(ua)) {
+    model = "iPad";
+  }
+  // Android — extract model name
+  else if (/Android/.test(ua)) {
+    var match = ua.match(/Android[^;]*;\s*([^)]+)\)/);
+    if (match) {
+      // Clean up the model string
+      var raw = match[1].trim();
+      // Remove "Build/..." suffix if present
+      raw = raw.replace(/\s*Build\/.*/i, "").trim();
+      model = raw || "Android Device";
+    } else {
+      model = "Android Device";
+    }
+  }
+  // Other
+  else if (/Windows/.test(ua)) { model = "Windows PC"; }
+  else if (/Mac/.test(ua))     { model = "Mac"; }
+
+  var screen_res = screen.width + "x" + screen.height;
+  return model + " | " + screen_res + " | " + navigator.language;
 }
 
 document.getElementById("driverId").addEventListener("input",function(){
   clearTimeout(lookupTimer);
   var val=this.value.trim();
+  // Reset everything on every keystroke
   state.driverVerified=false; state.driverName="";
+  state.lastSearchedId = "";
   document.getElementById("driverName").value="";
   document.getElementById("verifiedBadge").classList.remove("show");
   document.getElementById("actionRow").classList.remove("show");
@@ -301,16 +332,22 @@ document.getElementById("driverId").addEventListener("input",function(){
   setGps("","Tap Entry or Exit to capture location");
   hideResult();
   if(val.length<1)return;
-  lookupTimer=setTimeout(function(){lookupDriver(val);},600);
+  // Wait 800ms after user stops typing before searching
+  lookupTimer=setTimeout(function(){lookupDriver(val);},800);
 });
 
 function lookupDriver(id){
+  // Store the ID being searched — if user typed more since, discard result
+  state.lastSearchedId = id;
   showSpinner(true);
   var url=SCRIPT_URL+"?action=getDriver&driverId="+encodeURIComponent(id)+"&deviceToken="+encodeURIComponent(getDeviceToken());
   var xhr=new XMLHttpRequest();
   xhr.open("GET",url,true);
   xhr.onload=function(){
     showSpinner(false);
+    // Discard if user has typed a different ID since this request started
+    var currentVal = document.getElementById("driverId").value.trim();
+    if(currentVal !== id) return;
     try{
       var res=JSON.parse(xhr.responseText);
       if(res.success){
@@ -341,10 +378,10 @@ function handleAction(action){
   otherBtn.disabled=true;
   setGps("","Requesting location...");
   hideResult();
-  if(!navigator.geolocation){showResult("error","GPS Not Available","Please use Chrome or Safari.",[]);resetBtns();return;}
+  if(!navigator.geolocation){showResult("error","GPS Not Available","Please use Chrome browser.",[]);resetBtns();return;}
   if(navigator.permissions&&navigator.permissions.query){
     navigator.permissions.query({name:"geolocation"}).then(function(r){
-      if(r.state==="denied"){showResult("error","Location Blocked","iPhone: Settings > Privacy & Security > Location Services > Safari > While Using.",[]);resetBtns();return;}
+      if(r.state==="denied"){showResult("error","Location Blocked","Please allow location access in your browser settings.",[]);resetBtns();return;}
       tryGPS(true);
     }).catch(function(){tryGPS(true);});
   }else{tryGPS(true);}
@@ -360,11 +397,11 @@ function tryGPS(high){
     function(err){
       if(high){tryGPS(false);return;}
       var msg=err.code===1
-        ?"Location denied. iPhone: Settings > Privacy & Security > Location Services > Safari > While Using."
-        :err.code===2?"Location unavailable. Step outside and try again."
+        ?"Location permission denied. To fix on Android: 1) Tap the lock icon in your browser address bar, 2) Tap Permissions, 3) Tap Location and select Allow. OR go to Phone Settings > Apps > Chrome > Permissions > Location > Allow."
+        :err.code===2?"GPS signal not found. Please make sure your phone Location/GPS is turned ON in Phone Settings, then try again."
         :"Location timed out. Please try again.";
       setGps("fail","Location unavailable.");
-      showResult("error","Location Required",msg,[]);
+      showLocationHelp(msg);
       resetBtns();
     },
     high?{enableHighAccuracy:true,timeout:12000,maximumAge:0}:{enableHighAccuracy:false,timeout:15000,maximumAge:60000}
@@ -409,6 +446,21 @@ function submitAction(lat,lng){
   };
   xhr.onerror=function(){showResult("error","Network Error","Could not reach server.",[]);resetBtns();};
   xhr.send(params);
+}
+
+function showLocationHelp(msg) {
+  var box = document.getElementById("resultBox");
+  box.className = "result error";
+  document.getElementById("resultTitle").textContent = "Location Access Required";
+  document.getElementById("resultMsg").innerHTML =
+    "<b>Your browser blocked location access.</b><br><br>" +
+    "<b>Fix in 3 steps:</b><br>" +
+    "1. Tap the <b>lock icon</b> (or info icon) in your browser address bar<br>" +
+    "2. Tap <b>Permissions</b> or <b>Site Settings</b><br>" +
+    "3. Tap <b>Location</b> and set to <b>Allow</b><br><br>" +
+    "Then come back and tap Entry or Exit again.<br><br>" +
+    "<span style='font-size:11px;opacity:0.6'>If that does not work: Phone Settings &rarr; Apps &rarr; Chrome &rarr; Permissions &rarr; Location &rarr; Allow</span>";
+  document.getElementById("resultMeta").innerHTML = "";
 }
 
 function showSpinner(v){document.getElementById("lookupSpinner").classList.toggle("show",v);}
