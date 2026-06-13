@@ -288,30 +288,24 @@ function getDeviceInfo(){
   var ua = navigator.userAgent;
   var model = "Unknown Device";
 
-  // iPhone detection
-  if (/iPhone/.test(ua)) {
-    model = "iPhone";
-  }
-  // iPad detection
-  else if (/iPad/.test(ua)) {
-    model = "iPad";
-  }
-  // Android — extract model name
-  else if (/Android/.test(ua)) {
-    var match = ua.match(/Android[^;]*;\s*([^)]+)\)/);
-    if (match) {
-      // Clean up the model string
-      var raw = match[1].trim();
-      // Remove "Build/..." suffix if present
-      raw = raw.replace(/\s*Build\/.*/i, "").trim();
-      model = raw || "Android Device";
+  if (/Android/.test(ua)) {
+    // Extract Android version
+    var verMatch = ua.match(/Android\s([\d.]+)/);
+    var androidVer = verMatch ? "Android " + verMatch[1] : "Android";
+    // Try to get model — newer Chrome just reports "K" so use screen size as differentiator
+    var modelMatch = ua.match(/Android[^;]*;\s*([^)]+)\)/);
+    var rawModel = modelMatch ? modelMatch[1].replace(/Build\/.*$/i,"").trim() : "";
+    // If model is just "K" (hidden by Chrome), use Android version + resolution
+    if (!rawModel || rawModel === "K") {
+      model = androidVer;
     } else {
-      model = "Android Device";
+      model = rawModel;
     }
   }
-  // Other
-  else if (/Windows/.test(ua)) { model = "Windows PC"; }
-  else if (/Mac/.test(ua))     { model = "Mac"; }
+  else if (/iPhone/.test(ua)) { model = "iPhone"; }
+  else if (/iPad/.test(ua))   { model = "iPad"; }
+  else if (/Windows/.test(ua)){ model = "Windows PC"; }
+  else if (/Mac/.test(ua))    { model = "Mac"; }
 
   var screen_res = screen.width + "x" + screen.height;
   return model + " | " + screen_res + " | " + navigator.language;
